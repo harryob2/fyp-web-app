@@ -446,6 +446,7 @@ def cleanTableFunc(HR_df, GUI_df): # function for making athlete_stats_df and at
     stage_change_index = [] 
 
     temp_i = 0
+    print(GUI_df)
     while type(HR_df_cleaner.iloc[temp_i][0]) is str:
         hr_time = str(HR_df_cleaner.iloc[temp_i][0])
         print(hr_time)
