@@ -443,23 +443,31 @@ def cleanTableFunc(HR_df, GUI_df): # function for making athlete_stats_df and at
     GUI_blood_lactate_rows = []
 
     x = 0
-    stage_change_index = []
-    for i in range(len(HR_df_cleaner)):
-        if datetime.strptime(HR_df_cleaner.iloc[i][0], "%H:%M:%S") < datetime.strptime(
+    stage_change_index = [] 
+
+    temp_i = 0
+    while type(HR_df_cleaner.iloc[temp_i][0]) is str:
+        hr_time = str(HR_df_cleaner.iloc[temp_i][0])
+        print(hr_time)
+        if datetime.strptime(hr_time, "%H:%M:%S") < datetime.strptime(
                 GUI_df.iloc[len(GUI_df) - 1][3],
                 "%M:%S"):  # discards all values taken after test was finished
             if x + 1 <= len(GUI_df):
-                if datetime.strptime(HR_df_cleaner.iloc[i][0], "%H:%M:%S") <= datetime.strptime(GUI_df.iloc[x][3],
+                if datetime.strptime(hr_time, "%H:%M:%S") <= datetime.strptime(GUI_df.iloc[x][3],
                                                                                                 "%M:%S"):
                     GUI_stage_rows.append(GUI_df.iloc[x][0])
                     GUI_velocity_rows.append(GUI_df.iloc[x][2])
                     GUI_blood_lactate_rows.append(GUI_df.iloc[x][1])
                 else:
                     x += 1
-                    stage_change_index.append(i)
+                    stage_change_index.append(temp_i)
                     GUI_stage_rows.append(GUI_df.iloc[x][0])
                     GUI_velocity_rows.append(GUI_df.iloc[x][2])
                     GUI_blood_lactate_rows.append(GUI_df.iloc[x][1])
+
+        temp_i += 1
+        print(type(HR_df_cleaner.iloc[temp_i][0]))
+
 
     stage_df = pd.DataFrame({'Stage': GUI_stage_rows})
     velocity_df = pd.DataFrame({GUI_df.columns[2]: GUI_velocity_rows})
@@ -481,6 +489,9 @@ def cleanTableFunc(HR_df, GUI_df): # function for making athlete_stats_df and at
                                                         # with useful info for the report
     athlete_stats_df = athlete_stats_df.iloc[:,
                         [2, 4, 1, 0, 3, 5]]  # change the order of the columns to make it easier to understand
+
+    athlete_stats_df.rename(columns={ athlete_stats_df.columns[2]: "HR" }, inplace = True)
+    print(athlete_stats_df)
     
     athlete_stats_df['HR'] = round(pd.to_numeric(athlete_stats_df['HR'])) # round HR to integer
     athlete_stats_df['VO2/Kg'] = round(pd.to_numeric(athlete_stats_df['VO2/Kg']), 2) # round VO2/Kg to 2 decimal places
