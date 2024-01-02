@@ -178,8 +178,6 @@ row6 = html.Div([
     html.Button('Click here to generate a report with sample data',
                 id='sample_button',
                 n_clicks=0),
-    html.Label([html.A('Click here ', href='https://harryobrien.eu/feedback-form-for-cosmed-web-app/', target='_blank'), 'to give feedback.'],
-               style={"margin-top":45}),
     html.Label([html.A('Click here ', href='https://youtu.be/pgGwRGgJvQc', target='_blank'), 'to watch a tutorial video.'],
                style={"margin-top":8}),
     html.Button('Test (Developer use only)', id='test', n_clicks=0, style={"margin-top":200})
